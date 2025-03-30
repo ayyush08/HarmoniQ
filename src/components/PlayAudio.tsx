@@ -3,7 +3,7 @@ import Plyr from 'plyr-react';
 import 'plyr/dist/plyr.css';
 
 interface PlayAudioProps {
-    audioUrl: string;
+    audioUrl: string ;
     title: string;
     posterUrl?: string;
 }
@@ -11,15 +11,15 @@ interface PlayAudioProps {
 const PlayAudio: React.FC<PlayAudioProps> = ({ audioUrl, title, posterUrl }) => {
     const options = {
         autoplay: true,
-        controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume',],
         muted: false,
     };
 
     useEffect(() => {}, [audioUrl]);
 
     return (
-        <div className="audio-player-container max-w-3xl mx-auto self-start  rounded-lg shadow-lg">
-            Here is your requested sound:
+        <div className="audio-player-container  mx-auto self-start  rounded-lg shadow-lg">
+            
             <Plyr
                 source={{
                     type: 'audio',

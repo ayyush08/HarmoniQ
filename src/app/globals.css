@@ -5,6 +5,54 @@
   --foreground: #171717;
 }
 
+
+/* Custom styles for Plyr audio player */
+.audio-player-container {
+  margin: 0 auto;
+  background-color: #1a1a1a;
+  border-radius: 15px;
+  width: 100%;
+}
+
+.plyr {
+  background-color: #222; /* Change background color */
+  border-radius: 10px; /* Round the corners */
+}
+
+.plyr__controls {
+  background-color: #444; /* Controls background color */
+  border-radius: 5px;
+
+}
+
+
+
+.plyr__play-large {
+  background-color: #ff5733; 
+}
+
+.plyr__play-large:hover {
+  background-color: #3d1208; 
+}
+
+
+.plyr__controls button {
+  color: #fff;
+  background-color: rgb(19, 103, 103);
+  transition: all 0.3s ease;
+}
+
+.plyr__controls button:hover {
+  background-color: #3d1208; 
+}
+
+.plyr__time {
+  color: #ffcc00;
+}
+
+.plyr__control--pressed {
+  background-color: #ff5733; 
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

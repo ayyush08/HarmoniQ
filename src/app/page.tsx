@@ -37,7 +37,7 @@ const fetchAudioUrl = async (prompt: string): Promise<string> => {
 export default function Home() {
   const [prompt, setPrompt] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [audioUrl, setAudioUrl] = useState<string | null>("");
+  const [audioUrl, setAudioUrl] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
@@ -57,9 +57,9 @@ export default function Home() {
       { text: prompt, type: "user" },
     ]);
 
-    setPrompt(""); 
+    setPrompt("");
 
-   
+
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: "Generating audio for: " + prompt, type: "ai" },
@@ -89,30 +89,58 @@ export default function Home() {
   return (
     <>
       <BackgroundBeamsWithCollision className="min-h-screen relative w-full flex justify-center items-center" >
-        <div className="flex flex-col gap-20 w-full h-full  justify-center items-center">
+        <div className="flex flex-col gap-20 w-full h-full  justify-center items-center overflow-auto ">
 
-          <h1 className="text-5xl p-5  font-bold text-white text-center w-full absolute top-0 z-2 left-0  font-sans">
+          <h1 className="text-5xl p-5  font-bold text-white  w-full absolute top-0 z-2 left-0  font-sans pt-10">
             <ColourfulText text={APP_NAME} />
           </h1>
-<div className="flex flex-col gap-5 w-full h-full justify-center items-center">
-          {
-            prompt === "" ? (
-          <div className="font-semibold  text-5xl mb-6 mx-auto  bg-gradient-to-b text-transparent bg-clip-text from-teal-500 to-red-300">
-            Type the kind of sound you need, and let AI bring it to life.
+          <div className="flex flex-col gap-5 w-[50vw] h-full justify-center items-center">
+            {
+              messages.length===0 ? (
+                <div className="font-semibold  text-5xl mb-6 mx-auto  bg-gradient-to-b text-transparent bg-clip-text from-teal-500 to-red-300">
+                  Type the kind of sound you need, and let AI bring it to life.
+                </div>
+
+              ) : null
+            }
+        <div className=" flex flex-col gap-5 w-full h-full justify-center items-center overflow-auto">
+
+            {
+              messages.map((message, index) => {
+                if (message.type === "user") {
+                  return (
+                    <div key={index} className="text-white text-lg self-end bg-blue-500 p-2 rounded-md">
+                      {message.text}
+                    </div>
+                  );
+                } else if (message.type === "ai") {
+                  return (
+                    <div key={index} className="text-white text-lg self-start p-2 rounded-md">
+                      {message.text}
+                    </div>
+                  );
+                } else if (message.type === "audio") {
+                  return (
+                    <div key={index} className="text-white text-lg self-start rounded-md">
+                      Here is your requested sound:
+                    <PlayAudio key={index} title={"index"} audioUrl={audioUrl} />
+                    </div>
+                  );
+                }
+              })
+            }
+              </div>
+            <div className="w-full flex justify-center items-center">
+
+            <PlaceholdersAndVanishInput
+              placeholders={placeholders}
+              onChange={handleChange}
+              onSubmit={onSubmit}
+              name="prompt"
+              />
+              </div>
           </div>
-
-            ): null
-          }
-
-          
-          <PlaceholdersAndVanishInput
-            placeholders={placeholders}
-            onChange={handleChange}
-            onSubmit={onSubmit}
-            name="prompt"
-            />
         </div>
-            </div>
 
       </BackgroundBeamsWithCollision>
     </>
