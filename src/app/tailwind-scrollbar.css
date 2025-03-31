@@ -1,0 +1,11 @@
+/* Custom scrollbar styling */
+@layer utilities {
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-none {
+        scrollbar-width: none;
+        /* Firefox */
+    }
+}

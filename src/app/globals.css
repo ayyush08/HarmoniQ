@@ -1,10 +1,19 @@
 @import "tailwindcss";
+@import './tailwind-scrollbar.css';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  scrollbar-width: none; /* Firefox */
+}
 
 /* Custom styles for Plyr audio player */
 .audio-player-container {
