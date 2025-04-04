@@ -1,5 +1,3 @@
-
-import { uploadAudioToImageKit } from "@/helpers/imagekit";
 import { NextResponse } from "next/server";
 
 const HF_API_KEY = process.env.HF_API_KEY as string;
@@ -8,9 +6,9 @@ if (!HF_API_KEY) {
 }
 
 export async function POST(request: Request) {
-
     try {
         const { enhancedPrompt } = await request.json();
+
         const response = await fetch("https://api-inference.huggingface.co/models/facebook/musicgen-small", {
             method: "POST",
             headers: {
@@ -20,26 +18,20 @@ export async function POST(request: Request) {
             body: JSON.stringify({ inputs: enhancedPrompt })
         });
 
-        if(!response.ok) {
+        if (!response.ok) {
             console.error("Error from Hugging Face API:", response.statusText);
-            return NextResponse.json({ error: "Failed to generate sound." }, { status: 500 });
+            return new NextResponse("Failed to generate sound.", { status: 500 });
         }
 
-        const base64Audio = await response.arrayBuffer();
-        console.log("Base64 Audio:", base64Audio);
-        
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
 
-        const audioImageKitURL = await uploadAudioToImageKit(base64Audio);
-        if (!audioImageKitURL) {
-            console.error("Error uploading audio to ImageKit.");
-            return NextResponse.json({ error: "Failed to upload audio." }, { status: 500 });
-        }
-
-        return NextResponse.json({
-            audioURL: audioImageKitURL,
-        }, {
+        return new NextResponse(buffer, {
             status: 200,
-            statusText: "OK",
+            headers: {
+                "Content-Type": "audio/mpeg", // or "audio/wav" depending on model
+                "Content-Disposition": "inline; filename=generated.mp3"
+            }
         });
 
     } catch (error) {

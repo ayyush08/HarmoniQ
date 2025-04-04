@@ -1,5 +1,9 @@
+'use client'
 import React, { useEffect } from 'react';
-import Plyr from 'plyr-react';
+// import Plyr from 'plyr-react';
+import dynamic from 'next/dynamic';
+
+const Plyr = dynamic(() => import("plyr-react"), { ssr: false });
 import 'plyr/dist/plyr.css';
 
 interface PlayAudioProps {
@@ -40,3 +44,4 @@ const PlayAudio: React.FC<PlayAudioProps> = ({ audioUrl, title, posterUrl }) => 
 };
 
 export default PlayAudio;
+

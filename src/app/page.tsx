@@ -4,8 +4,10 @@ import PlayAudio from "@/components/PlayAudio";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import { ColourfulText } from "@/components/ui/colourful-text.tsx";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
+import useGenerateSound from "@/helpers/apiCall";
 import { APP_NAME } from "@/lib/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 
 const placeholders = [
   "a funky house with 80s hip hop vibes",
@@ -30,31 +32,50 @@ const fetchAudioUrl = async (prompt: string): Promise<string> => {
 
 export default function Home() {
   const [prompt, setPrompt] = useState<string>("");
-  const [audioUrl, setAudioUrl] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const {
+    audioSrc,
+    loading,
+    error,
+    generateSound
+  } = useGenerateSound();
+
+  useEffect(()=>{
+    if(audioSrc){
+      setAudioUrl(audioSrc);
+    }
+
+  },[prompt,audioSrc]);
+
+  if(error){
+    alert(error);
+  }
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPrompt(e.target.value);
+    e.preventDefault();
+    // setPrompt(e.target.value)
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const prompt = formData.get("prompt") as string;
     if (prompt.trim().length < 5) {
       alert("Please provide a proper prompt");
       return;
     }
 
-    setIsLoading(true);
+    setPrompt(prompt)
 
-    const generatedAudioUrl = await fetchAudioUrl(prompt);
-    setAudioUrl(generatedAudioUrl);
-    setPrompt("");
-    setIsLoading(false);
+    await generateSound(prompt);
+    
   };
 
 
-  if (isLoading) {
+  if (loading) {
     return (
       <BackgroundBeamsWithCollision className="min-h-screen w-full flex flex-col justify-center items-center">
         <div className="flex flex-col gap-5 w-full justify-center items-center">
