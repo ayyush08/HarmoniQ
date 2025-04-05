@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { audio } from "motion/react-client";
 
 const useGenerateSound = () => {
     const [audioSrc, setAudioSrc] = useState<string | null>(null);
@@ -13,24 +14,31 @@ const useGenerateSound = () => {
 
         try {
 
-            const geminiResponse = await axios.post("/api/enhance-prompt",{
+            const geminiResponse = await axios.post("/api/enhance-prompt", {
                 text: prompt,
             })
 
             const enhancedPrompt = geminiResponse.data.enhancedPrompt;
 
-            if(!enhancedPrompt){
+            if (!enhancedPrompt) {
                 throw new Error("No enhanced prompt returned from Gemini API.");
             }
             const res = await axios.post("/api/generate-sound", {
                 enhancedPrompt: enhancedPrompt,
             }, {
-                responseType: "arraybuffer",
+                responseType: "blob",
             });
 
-            const blob = new Blob([res.data], { type: "audio/mpeg" });
-            const url = URL.createObjectURL(blob);
-            setAudioSrc(url);
+            const audioBlob = new Blob([res.data], { type: "audio/mp3" });
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            console.log(res.data);
+            
+            // const audio = res?.data?.audioUrl
+
+            console.log(audioUrl);
+            
+            setAudioSrc(audioUrl);
         } catch (err: any) {
             setError(err?.message || "Failed to generate sound.");
         } finally {

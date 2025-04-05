@@ -40,14 +40,14 @@ export default function Home() {
     generateSound
   } = useGenerateSound();
 
-  useEffect(()=>{
-    if(audioSrc){
+  useEffect(() => {
+    if (audioSrc) {
       setAudioUrl(audioSrc);
     }
 
-  },[prompt,audioSrc]);
+  }, [prompt, audioSrc]);
 
-  if(error){
+  if (error) {
     alert(error);
   }
 
@@ -71,7 +71,7 @@ export default function Home() {
     setPrompt(prompt)
 
     await generateSound(prompt);
-    
+
   };
 
 
@@ -85,8 +85,8 @@ export default function Home() {
         </div>
 
         {/* Centered "Generating your sound..." */}
-        <div className="flex flex-1 w-full justify-center items-center">
-          <div className="text-white text-lg text-center">Generating your sound...</div>
+        <div className="flex flex-1 w-full justify-center items-center text-5xl leading-loose ">
+          <ColourfulText text="Generating your sound..." />
         </div>
       </BackgroundBeamsWithCollision>
 
@@ -103,7 +103,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-5 w-[50vw] min-h-screen justify-center items-center">
             {!audioUrl && (
-              <div className="font-semibold text-5xl mb-6 mx-auto bg-gradient-to-b text-transparent bg-clip-text from-teal-500 to-red-300">
+              <div className="font-bold italic p-5 text-5xl mb-6 mx-auto bg-gradient-to-b text-transparent bg-clip-text from-teal-500 to-red-300">
                 Type the kind of sound you need, and let AI bring it to life.
               </div>
             )}
@@ -121,15 +121,34 @@ export default function Home() {
 
             {audioUrl && (
               <>
-                <div className="text-white text-lg">
+                <div className="text-white text-center text-lg font-semibold mb-4">
                   Here is your requested sound:
-                  <PlayAudio title="Generated Sound" audioUrl={audioUrl} />
+                  <PlayAudio title={prompt} audioUrl={audioUrl} />
                 </div>
 
-                <button onClick={() => setAudioUrl("")} className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer">
-                  Reset
+                <button
+                onClick={()=>{
+                  setAudioUrl(null);
+                  setPrompt("");
+                }}
+                className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                  <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+                    Regenerate another sound
+                  </span>
                 </button>
               </>
+            )}
+            {audioSrc && (
+              <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+                  <a href={audioSrc} download="generated.mp3" className="">
+                    Download MP3
+                  </a>
+
+                </span>
+              </button>
             )}
           </div>
         </div>

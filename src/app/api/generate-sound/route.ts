@@ -1,3 +1,4 @@
+import { convertFlacToMp3 } from "@/lib/convertToMp3";
 import { NextResponse } from "next/server";
 
 const HF_API_KEY = process.env.HF_API_KEY as string;
@@ -23,17 +24,23 @@ export async function POST(request: Request) {
             return new NextResponse("Failed to generate sound.", { status: 500 });
         }
 
-        const arrayBuffer = await response.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+        const flacBuffer = Buffer.from(await response.arrayBuffer());
 
-        return new NextResponse(buffer, {
+        // 🔥 Convert it properly
+        const mp3Buffer = await convertFlacToMp3(flacBuffer);
+
+        if (!mp3Buffer || mp3Buffer.length === 0) {
+            throw new Error("Conversion returned empty buffer");
+        }
+
+        return new NextResponse(mp3Buffer, {
             status: 200,
             headers: {
-                "Content-Type": "audio/mpeg", // or "audio/wav" depending on model
-                "Content-Disposition": "inline; filename=generated.mp3"
-            }
+                "Content-Type": "audio/mp3",
+                "Content-Disposition": "inline; filename=generated.mp3",
+                "Content-Length": mp3Buffer.length.toString(),
+            },
         });
-
     } catch (error) {
         console.error("Error generating sound:", error);
         return NextResponse.json({ error: "Failed to generate sound." }, { status: 500 });
