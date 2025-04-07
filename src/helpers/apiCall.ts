@@ -34,7 +34,7 @@ const useGenerateSound = () => {
 
             console.log(res.data);
 
-            // const audio = res?.data?.audioUrl
+            
 
             console.log(audioUrl);
 

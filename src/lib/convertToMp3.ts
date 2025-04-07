@@ -1,9 +1,12 @@
 import ffmpeg from 'fluent-ffmpeg';
+import ffmpegPath from 'ffmpeg-static';
 import fs from 'fs/promises';
 import { tmpdir } from 'os';
 import path from 'path';
 import { randomUUID } from 'crypto';
 
+
+ffmpeg.setFfmpegPath(ffmpegPath || ''); 
 export async function convertFlacToMp3(flacBuffer: Buffer): Promise<Buffer> {
     const id = randomUUID();
     const inputPath = path.join(tmpdir(), `${id}.flac`);
