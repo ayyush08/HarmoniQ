@@ -33,11 +33,11 @@ const useGenerateSound = () => {
             const audioUrl = URL.createObjectURL(audioBlob);
 
             console.log(res.data);
-            
+
             // const audio = res?.data?.audioUrl
 
             console.log(audioUrl);
-            
+
             setAudioSrc(audioUrl);
         } catch (err: any) {
             setError(err?.message || "Failed to generate sound.");
@@ -46,7 +46,12 @@ const useGenerateSound = () => {
         }
     };
 
-    return { audioSrc, loading, error, generateSound };
+    const reset = () => {
+        setAudioSrc(null);
+        setError(null);
+    };
+
+    return { audioSrc, loading, error, generateSound ,reset};
 };
 
 export default useGenerateSound;

@@ -17,18 +17,7 @@ const placeholders = [
   "a motivational track for a workout video",
 ];
 
-const fetchAudioUrl = async (prompt: string): Promise<string> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const audioUrls: Record<string, string> = {
-        "a funky house with 80s hip hop vibes": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-        "a chill song with influences from lofi, chillstep, and downtempo": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-        "a catchy beat for a podcast intro": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-      };
-      resolve(audioUrls[prompt] || "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
-    }, 2000);
-  });
-};
+
 
 export default function Home() {
   const [prompt, setPrompt] = useState<string>("");
@@ -37,7 +26,8 @@ export default function Home() {
     audioSrc,
     loading,
     error,
-    generateSound
+    generateSound,
+    reset: resetSound,
   } = useGenerateSound();
 
   useEffect(() => {
@@ -45,12 +35,17 @@ export default function Home() {
       setAudioUrl(audioSrc);
     }
 
-  }, [prompt, audioSrc]);
+  }, [prompt, audioSrc, setAudioUrl, setPrompt]);
 
   if (error) {
     alert(error);
   }
 
+  const handleReset = () => {
+    setAudioUrl(null);
+    setPrompt("");
+    resetSound(); // <-- this is crucial
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -127,10 +122,7 @@ export default function Home() {
                 </div>
 
                 <button
-                onClick={()=>{
-                  setAudioUrl(null);
-                  setPrompt("");
-                }}
+                onClick={handleReset}
                 className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
                   <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
                   <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
