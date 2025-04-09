@@ -1,3 +1,5 @@
+// app/api/generate-sound/route.ts
+
 import { convertFlacToMp3 } from "@/lib/convertToMp3";
 import { NextResponse } from "next/server";
 
@@ -13,10 +15,10 @@ export async function POST(request: Request) {
         const response = await fetch("https://api-inference.huggingface.co/models/facebook/musicgen-small", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${HF_API_KEY}`,
-                "Content-Type": "application/json"
+                Authorization: `Bearer ${HF_API_KEY}`,
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify({ inputs: enhancedPrompt })
+            body: JSON.stringify({ inputs: enhancedPrompt }),
         });
 
         if (!response.ok) {
@@ -24,23 +26,19 @@ export async function POST(request: Request) {
             return new NextResponse("Failed to generate sound.", { status: 500 });
         }
 
-        const flacBuffer = Buffer.from(await response.arrayBuffer());
-
-        // 🔥 Convert it properly
-        const mp3Buffer = await convertFlacToMp3(flacBuffer);
-
-        if (!mp3Buffer || mp3Buffer.length === 0) {
-            throw new Error("Conversion returned empty buffer");
-        }
-
+        const flacBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(flacBuffer);
+        const mp3Buffer = await convertFlacToMp3(buffer);
         return new NextResponse(mp3Buffer, {
             status: 200,
             headers: {
-                "Content-Type": "audio/mp3",
-                "Content-Disposition": "inline; filename=generated.mp3",
-                "Content-Length": mp3Buffer.length.toString(),
+                "Content-Type": "audio/mpeg",
+                "Content-Disposition": `attachment; filename="generated_sound.mp3"`,
+                "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0",
             },
-        });
+        })
     } catch (error) {
         console.error("Error generating sound:", error);
         return NextResponse.json({ error: "Failed to generate sound." }, { status: 500 });
