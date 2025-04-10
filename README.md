@@ -1,30 +1,28 @@
-# HarmoniQ
+# 🎵 HarmoniQ
 
-- HarmoniQ is a Next.js application that provides an interface for users to generate sounds of their choice using a simple prompt. The application uses a combination of Gemini and Hugging Face APIs to generate the sounds and display them in a user-friendly manner.
-- The application is designed to be easy to use, with a simple and intuitive interface that allows users to quickly generate sounds without any technical knowledge.
+- HarmoniQ is a Next.js application that provides an interface for users to generate sounds of their choice using a simple prompt. The application uses a combination of Gemini and Hugging Face APIs to generate the sounds and display them in a user-friendly manner. 🎧
+- The application is designed to be easy to use, with a simple and intuitive interface that allows users to quickly generate sounds without any technical knowledge. 🚀
 
-## Features
-- User-friendly interface for sound generation
-- Integration with Gemini and Hugging Face APIs for sound generation
-- Ability to generate sounds based on user prompts
-- Display of generated sounds in a user-friendly manner
-- Downloadable sound files for user convenience
+## ✨ Features
+- 🖥️ User-friendly interface for sound generation
+- 🔗 Integration with Gemini and Hugging Face APIs for sound generation
+- 🎤 Ability to generate sounds based on user prompts
+- 🎶 Display of generated sounds in a user-friendly manner
+- 📥 Downloadable sound files for user convenience
 
+## 🛠️ Technologies Used
 
-## Technologies Used
-
-### Gemini API (model: gemini-1.5-flash)
+### 🌟 Gemini API (model: gemini-1.5-flash)
  For enhancing the user prompt to provide a better prompt to send on to the Hugging Face API
 
-### Hugging Face API (model: facebook/musicgen-small) 
+### 🤖 Hugging Face API (model: facebook/musicgen-small) 
  For generating the sound based on the user prompt
 
-### Next.js
+### ⚛️ Next.js
 - A React framework for building server-side rendered applications
 - Provides a simple and efficient way to build web applications with server-side rendering and static site generation
 
-
-## Installation
+## 🚀 Installation
 
 1. Clone the repository to your local machine
 ```bash
@@ -52,8 +50,8 @@
      npm run dev
 ```
 
-6. Open your browser and navigate to `http://localhost:3000` to view the application
+6. Open your browser and navigate to `http://localhost:3000` to view the application 🌐
 
-## Feedback
+## 💬 Feedback
 
-If you have any feedback or suggestions for improving the application, please feel free to reach out. Your input is greatly appreciated and will help us make HarmoniQ even better!
+If you have any feedback or suggestions for improving the application, please feel free to reach out. Your input is greatly appreciated and will help us make HarmoniQ even better! 🙌
