@@ -86,7 +86,7 @@ export default function Home() {
         </div>
 
         {/* Centered "Generating your sound..." */}
-        <div className="flex  w-full justify-center mb-10 font-extrabold items-center text-7xl   leading-loose ">
+        <div className="flex  w-full justify-center mb-10 font-extrabold items-center text-6xl   leading-loose ">
           <ColourfulText text="Generating your sound..." />
         </div>
       </WavyBackground>
@@ -95,7 +95,7 @@ export default function Home() {
   }
 
   return (
-    <section className="min-h-screen w-full flex justify-center items-center">
+
       <WavyBackground
       colors={[
         'teal',
@@ -157,6 +157,6 @@ export default function Home() {
           </div>
         </div>
       </WavyBackground>
-    </section>
+
   );
 }
