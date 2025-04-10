@@ -4,6 +4,7 @@ import PlayAudio from "@/components/PlayAudio";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import { ColourfulText } from "@/components/ui/colourful-text.tsx";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
+import { WavyBackground } from "@/components/ui/wavy-background";
 import useGenerateSound from "@/helpers/apiCall";
 import { APP_NAME } from "@/lib/constants";
 import { useEffect, useState } from "react";
@@ -72,7 +73,12 @@ export default function Home() {
 
   if (loading) {
     return (
-      <BackgroundBeamsWithCollision className="min-h-screen w-full flex flex-col justify-center items-center">
+      <WavyBackground colors={
+        [
+          'teal',
+          'blue',
+        ]
+      } className="min-h-screen w-full flex flex-col justify-center items-center">
         <div className="flex flex-col gap-5 w-full justify-center items-center">
           <h1 className="text-5xl p-5 font-bold text-white absolute top-0 left-0 font-sans pt-10">
             <ColourfulText text={APP_NAME} />
@@ -80,18 +86,24 @@ export default function Home() {
         </div>
 
         {/* Centered "Generating your sound..." */}
-        <div className="flex flex-1 w-full justify-center items-center text-5xl leading-loose ">
+        <div className="flex  w-full justify-center mb-10 font-extrabold items-center text-7xl   leading-loose ">
           <ColourfulText text="Generating your sound..." />
         </div>
-      </BackgroundBeamsWithCollision>
+      </WavyBackground>
 
     )
   }
 
   return (
     <section className="min-h-screen w-full flex justify-center items-center">
-      <BackgroundBeamsWithCollision className="min-h-screen w-full flex justify-center items-center">
-        <div className="flex flex-col gap-20 w-full justify-center items-center">
+      <WavyBackground
+      colors={[
+        'teal',
+        'blue',
+      ]}
+      
+      className="min-h-screen w-full flex justify-center items-center">
+        <div className="flex flex-col gap-40 w-full justify-center items-center">
           <h1 className="text-5xl p-5 font-bold text-white absolute top-0 left-0 font-sans pt-10">
             <ColourfulText text={APP_NAME} />
           </h1>
@@ -144,7 +156,7 @@ export default function Home() {
             )}
           </div>
         </div>
-      </BackgroundBeamsWithCollision>
+      </WavyBackground>
     </section>
   );
 }
