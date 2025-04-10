@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import './tailwind-scrollbar.css';
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -34,8 +33,9 @@
   color: rgb(19, 103, 103);
 }
 
-.plyr__controls span{
+.plyr__menu__container .plyr__control {
   color: white;
+  
 }
 .plyr__play-large {
   background-color: #ff5733; 
@@ -56,12 +56,17 @@
 }
 
 .plyr__time {
-  color: #ffcc00;
+  color: rgb(19, 103, 103);
 }
 
 .plyr__control--pressed {
   background-color: #ff5733; 
 }
+
+
+.plyr__progress > input {
+  color: rgb(19, 103, 103);
+} 
 
 @theme inline {
   --color-background: var(--background);

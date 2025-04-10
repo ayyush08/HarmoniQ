@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { convertFlacToMp3 } from "@/lib/convertToMp3";
 
 const useGenerateSound = () => {
     const [audioSrc, setAudioSrc] = useState<string | null>(null);
@@ -30,7 +29,8 @@ const useGenerateSound = () => {
             responseType: "blob"
         });
             const mp3Buffer = await res.data;
-            
+            // const convertedMp3Buffer = await NewConvertor(mp3Buffer);
+            // const audioBlob = new Blob([mp3Buffer], { type: "audio/mp3" });
             const audioBlob = new Blob([mp3Buffer], { type: "audio/mp3" });
             const audioUrl = URL.createObjectURL(audioBlob);
 

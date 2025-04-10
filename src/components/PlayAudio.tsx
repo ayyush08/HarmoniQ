@@ -14,7 +14,7 @@ interface PlayAudioProps {
 const PlayAudio: React.FC<PlayAudioProps> = ({ audioUrl, title }) => {
     const options = {
         autoplay: true,
-        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings'],
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
         muted: false,
     };
 
@@ -35,10 +35,7 @@ const PlayAudio: React.FC<PlayAudioProps> = ({ audioUrl, title }) => {
                         }
                     ]
                 }}
-                options={{
-                    autoplay: true,
-                    controls: ["play", "progress", "current-time", "mute", "volume"]
-                }}
+                options={options}
             />
 
         </div>

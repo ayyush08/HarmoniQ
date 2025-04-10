@@ -1,6 +1,6 @@
-// app/api/generate-sound/route.ts
 
-import { convertFlacToMp3 } from "@/lib/convertToMp3";
+
+import { convertFlacToMp3 } from "@/lib/convertAudio";
 import { NextResponse } from "next/server";
 
 const HF_API_KEY = process.env.HF_API_KEY as string;
