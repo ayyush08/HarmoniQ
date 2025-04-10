@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HarmoniQ
 
-## Getting Started
+- HarmoniQ is a Next.js application that provides an interface for users to generate sounds of their choice using a simple prompt. The application uses a combination of Gemini and Hugging Face APIs to generate the sounds and display them in a user-friendly manner.
+- The application is designed to be easy to use, with a simple and intuitive interface that allows users to quickly generate sounds without any technical knowledge.
 
-First, run the development server:
+## Features
+- User-friendly interface for sound generation
+- Integration with Gemini and Hugging Face APIs for sound generation
+- Ability to generate sounds based on user prompts
+- Display of generated sounds in a user-friendly manner
+- Downloadable sound files for user convenience
 
+
+## Technologies Used
+
+### Gemini API (model: gemini-1.5-flash)
+ For enhancing the user prompt to provide a better prompt to send on to the Hugging Face API
+
+### Hugging Face API (model: facebook/musicgen-small) 
+ For generating the sound based on the user prompt
+
+### Next.js
+- A React framework for building server-side rendered applications
+- Provides a simple and efficient way to build web applications with server-side rendering and static site generation
+
+
+## Installation
+
+1. Clone the repository to your local machine
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+     https://github.com/ayyush08/HarmoniQ.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to the project directory
+```bash
+     cd HarmoniQ
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Install the required dependencies
+```bash
+     npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Create a `.env` file in the root directory and add your API keys
+```bash
+     NEXT_PUBLIC_HF_API_KEY=your_huggingface_api_key
+     GEMINI_API_KEY=your_gemini_api_key
+```
 
-## Learn More
+5. Start the development server
+```bash
+     npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+6. Open your browser and navigate to `http://localhost:3000` to view the application
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Feedback
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If you have any feedback or suggestions for improving the application, please feel free to reach out. Your input is greatly appreciated and will help us make HarmoniQ even better!
