@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from transformers import AutoProcessor, MusicgenForConditionalGeneration, TextToAudioPipeline
 import torch
 import io
-import soundfile as sf  # pip install soundfile
+import soundfile as sf  
 
 app = FastAPI()
 

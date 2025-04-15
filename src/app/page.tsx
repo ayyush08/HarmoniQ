@@ -1,5 +1,6 @@
 'use client'
 
+import Navbar from "@/components/Navbar";
 import PlayAudio from "@/components/PlayAudio";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import { ColourfulText } from "@/components/ui/colourful-text.tsx";
@@ -104,10 +105,8 @@ export default function Home() {
       
       className="min-h-screen w-full flex justify-center items-center">
         <div className="flex flex-col gap-40 w-full justify-center items-center">
-          <h1 className="text-5xl p-5 font-bold text-white absolute top-0 left-0 font-sans pt-10">
-            <ColourfulText text={APP_NAME} />
-          </h1>
-
+          
+          
           <div className="flex flex-col gap-5 w-[50vw] min-h-screen justify-center items-center">
             {!audioUrl && (
               <div className="font-bold italic p-5 text-5xl mb-6 mx-auto bg-gradient-to-b text-transparent bg-clip-text from-teal-500 to-red-300">

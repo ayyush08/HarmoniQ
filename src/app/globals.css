@@ -8,7 +8,8 @@
 }
 
 .scrollbar-none {
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Custom styles for Plyr audio player */
@@ -19,30 +20,34 @@
 }
 
 .plyr {
-  background-color: #222; /* Change background color */
-  border-radius: 10px; /* Round the corners */
+  background-color: #222;
+  /* Change background color */
+  border-radius: 10px;
+  /* Round the corners */
 }
 
 .plyr__controls {
-  background-color: #444; /* Controls background color */
+  background-color: #444;
+  /* Controls background color */
   border-radius: 5px;
 
 }
 
-.plyr__tooltip{
+.plyr__tooltip {
   color: rgb(19, 103, 103);
 }
 
 .plyr__menu__container .plyr__control {
   color: white;
-  
+
 }
+
 .plyr__play-large {
-  background-color: #ff5733; 
+  background-color: #ff5733;
 }
 
 .plyr__play-large:hover {
-  background-color: #3d1208; 
+  background-color: #3d1208;
 }
 
 .plyr__controls button {
@@ -52,7 +57,7 @@
 }
 
 .plyr__controls button:hover {
-  background-color: #3d1208; 
+  background-color: #3d1208;
 }
 
 .plyr__time {
@@ -60,15 +65,20 @@
 }
 
 .plyr__control--pressed {
-  background-color: #ff5733; 
+  background-color: #ff5733;
 }
 
 
-.plyr__progress > input {
+.plyr__progress>input {
   color: rgb(19, 103, 103);
-} 
+}
 
 @theme inline {
+
+  --shadow-input:
+    0px 2px 3px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 0px 0px rgba(25, 28, 33, 0.02),
+    0px 0px 0px 1px rgba(25, 28, 33, 0.08);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -133,18 +143,21 @@
   --color-card-foreground: var(--card-foreground);
 
   --color-card: var(--card);
+
   @keyframes aurora {
     from {
       background-position:
         50% 50%,
         50% 50%;
     }
+
     to {
       background-position:
         350% 50%,
         350% 50%;
     }
   }
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -224,6 +237,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
