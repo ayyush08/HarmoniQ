@@ -5,10 +5,7 @@ import decodeAudio from 'audio-decode';
 export async function convertFlacToMp3(flacBuffer: Buffer): Promise<Buffer> {
   try {
     // Convert Buffer to ArrayBuffer
-    const arrayBuffer = flacBuffer.buffer.slice(
-      flacBuffer.byteOffset,
-      flacBuffer.byteOffset + flacBuffer.byteLength
-    );
+    const arrayBuffer = new Uint8Array(flacBuffer).buffer;
 
     // Decode FLAC to AudioBuffer
     const audioBuffer = await decodeAudio(arrayBuffer as ArrayBuffer);

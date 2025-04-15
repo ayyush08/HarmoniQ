@@ -30,33 +30,32 @@ const useGenerateSound = () => {
             if (!enhancedPrompt) {
                 throw new Error("No enhanced prompt returned from Gemini API.");
             }
-            const response = await fetch("https://api-inference.huggingface.co/models/facebook/musicgen-small", {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${HF_API_KEY}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ inputs: enhancedPrompt }),
-            });
+            const response = await axios.post(
+                "http://localhost:5000/generate",
+                { prompt: enhancedPrompt },
+                { responseType: "arraybuffer" } // 👈 Important!
+            );
 
-            if (!response.ok) {
+
+            console.log("Response from Hugging Face API:", response);
+
+
+            if (!response.data) {
                 console.error("Error from Hugging Face API:", response.statusText);
                 throw new Error("Failed to generate sound.");
             }
 
-            const flacBuffer = await response.arrayBuffer();
-            const buffer = Buffer.from(flacBuffer);
-            const mp3Buffer = await convertFlacToMp3(buffer);
-            const audioBlob = new Blob([mp3Buffer], { type: "audio/mp3" });
+            const flacData = response.data; // This is already an ArrayBuffer
+            const mp3Data = await convertFlacToMp3(flacData); // Convert FLAC to MP3
+            const audioBlob = new Blob([mp3Data], { type: "audio/mp3" }); 
             const audioUrl = URL.createObjectURL(audioBlob);
-
-            
-
+            setAudioSrc(audioUrl); // Use it in <audio> tag or Plyr
 
 
-            console.log(audioUrl);
 
-            setAudioSrc(audioUrl);
+
+
+            console.log(response.data)
         } catch (err: any) {
             setError(err?.message || "Failed to generate sound.");
         } finally {
