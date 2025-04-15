@@ -24,12 +24,14 @@ const placeholders = [
 export default function Home() {
   const [prompt, setPrompt] = useState<string>("");
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [isSavingAudio, setIsSavingAudio] = useState<boolean>(false);
   const {
     audioSrc,
     loading,
     error,
     generateSound,
     reset: resetSound,
+    mp3Buffer,
   } = useGenerateSound();
 
   useEffect(() => {
@@ -71,6 +73,60 @@ export default function Home() {
 
   };
 
+  const handleSave = async () => {
+    try {
+      if (!audioSrc) {
+        alert("No audio to save");
+        return;
+      }
+      setIsSavingAudio(true);
+      const audioBase64 = mp3Buffer
+        ? arrayBufferToBase64(
+          mp3Buffer.buffer.slice(
+            mp3Buffer.byteOffset,
+            mp3Buffer.byteOffset + mp3Buffer.byteLength
+          ) as ArrayBuffer
+        )
+        : "";
+
+
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          audioBase64: audioBase64,
+        }),
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error("Failed to upload audio to ImageKit");
+      }
+
+      const { url } = await uploadRes.json();
+
+      // Step 2: Save URL + prompt to DB
+      const saveRes = await fetch("/api/save-audio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url, title: prompt }),
+      });
+
+      if (!saveRes.ok) throw new Error("Failed to save audio URL");
+
+      alert("Audio saved and uploaded successfully!");
+    } catch (error) {
+      console.error("Error saving audio:", error);
+      alert("An error occurred while saving the audio. Please try again.");
+
+    }finally{
+      setIsSavingAudio(false);
+    }
+  }
+
 
   if (loading) {
     return (
@@ -80,11 +136,7 @@ export default function Home() {
           'blue',
         ]
       } className="min-h-screen w-full flex flex-col justify-center items-center">
-        <div className="flex flex-col gap-5 w-full justify-center items-center">
-          <h1 className="text-5xl p-5 font-bold text-white absolute top-0 left-0 font-sans pt-10">
-            <ColourfulText text={APP_NAME} />
-          </h1>
-        </div>
+
 
         {/* Centered "Generating your sound..." */}
         <div className="flex  w-full justify-center mb-10 font-extrabold items-center text-6xl   leading-loose ">
@@ -97,52 +149,53 @@ export default function Home() {
 
   return (
 
-      <WavyBackground
+    <WavyBackground
       colors={[
         'teal',
         'blue',
       ]}
-      
+
       className="min-h-screen w-full flex justify-center items-center">
-        <div className="flex flex-col gap-40 w-full justify-center items-center">
-          
-          
-          <div className="flex flex-col gap-5 w-[50vw] min-h-screen justify-center items-center">
-            {!audioUrl && (
-              <div className="font-bold italic p-5 text-5xl mb-6 mx-auto bg-gradient-to-b text-transparent bg-clip-text from-teal-500 to-red-300">
-                Type the kind of sound you need, and let AI bring it to life.
+      <div className="flex flex-col gap-40 w-full justify-center items-center">
+
+
+        <div className="flex flex-col gap-5 w-[50vw] min-h-screen justify-center items-center">
+          {!audioUrl && (
+            <div className="font-bold italic p-5 text-5xl mb-6 mx-auto bg-gradient-to-b text-transparent bg-clip-text from-teal-500 to-red-300">
+              Type the kind of sound you need, and let AI bring it to life.
+            </div>
+          )}
+
+          {!audioUrl && (
+            <div className="w-full flex justify-center items-center">
+              <PlaceholdersAndVanishInput
+                placeholders={placeholders}
+                onChange={handleChange}
+                onSubmit={onSubmit}
+                name="prompt"
+              />
+            </div>
+          )}
+
+          {audioUrl && (
+            <>
+              <div className="text-white text-center text-lg font-semibold mb-4">
+                Here is your requested sound:
+                <PlayAudio title={prompt} audioUrl={audioUrl} />
               </div>
-            )}
 
-            {!audioUrl && (
-              <div className="w-full flex justify-center items-center">
-                <PlaceholdersAndVanishInput
-                  placeholders={placeholders}
-                  onChange={handleChange}
-                  onSubmit={onSubmit}
-                  name="prompt"
-                />
-              </div>
-            )}
-
-            {audioUrl && (
-              <>
-                <div className="text-white text-center text-lg font-semibold mb-4">
-                  Here is your requested sound:
-                  <PlayAudio title={prompt} audioUrl={audioUrl} />
-                </div>
-
-                <button
+              <button
                 onClick={handleReset}
                 className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-                  <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-                    Regenerate another sound
-                  </span>
-                </button>
-              </>
-            )}
-            {audioSrc && (
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+                  Regenerate another sound
+                </span>
+              </button>
+            </>
+          )}
+          {audioSrc && (
+            <>
               <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
                 <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
                 <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
@@ -152,10 +205,32 @@ export default function Home() {
 
                 </span>
               </button>
-            )}
-          </div>
+              <button disabled={isSavingAudio} onClick={() => handleSave()} className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+                  {
+                    isSavingAudio ? "Saving..." : "Save to your profile"
+                  }
+
+                </span>
+              </button>
+            </>
+          )}
         </div>
-      </WavyBackground>
+      </div>
+    </WavyBackground>
 
   );
+}
+
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+
+  return window.btoa(binary);
 }

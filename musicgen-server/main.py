@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from transformers import AutoProcessor, MusicgenForConditionalGeneration, TextToAudioPipeline
 import torch
 import io
-import soundfile as sf  
+import soundfile as sf
 
 app = FastAPI()
 
@@ -19,15 +19,17 @@ app.add_middleware(
 class PromptRequest(BaseModel):
     prompt: str
 
-# Auto-detect CUDA
+# Use GPU if available
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"[INFO] Using device: {device}")
 
-# Load MusicGen
+# Load model and processor with FP16 for speed & memory efficiency
 model = MusicgenForConditionalGeneration.from_pretrained(
     "facebook/musicgen-small",
-    attn_implementation="eager"
+    attn_implementation="eager",
+    torch_dtype=torch.float16 if device == "cuda" else torch.float32  # use float16 for GPU
 ).to(device)
+
 processor = AutoProcessor.from_pretrained("facebook/musicgen-small")
 synthesizer = TextToAudioPipeline(model=model, processor=processor)
 
@@ -35,20 +37,19 @@ synthesizer = TextToAudioPipeline(model=model, processor=processor)
 async def generate(prompt_req: PromptRequest):
     prompt = prompt_req.prompt
     print(f"[INFO] Generating music for: {prompt}")
-    
+
     try:
         result = synthesizer(
             prompt,
             forward_params={
                 "do_sample": True,
-                "max_new_tokens": 1536  # Try reducing this for faster results
+                "max_new_tokens": 1024  # 10–15 sec output
             }
         )
-        
+
         audio = result["audio"].squeeze()
         sampling_rate = result["sampling_rate"]
 
-        # Convert to FLAC
         buffer = io.BytesIO()
         sf.write(buffer, audio, samplerate=sampling_rate, format="FLAC")
         buffer.seek(0)

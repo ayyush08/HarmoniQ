@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import User from '@/models/user.model';
 import { connectDB } from '@/dbConfig/db';
+import { create } from 'domain';
 
 connectDB();
 
@@ -29,6 +30,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
+        // const buffer = Buffer.from(audioData, 'base64');
         user.savedAudioUrls.push({ url, title });
         await user.save();
 

@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 
 export interface AudioUrl extends Document {
+    // audioData: Buffer;
     url: string;
     title: string;
     createdAt: Date;
@@ -10,15 +11,15 @@ export interface AudioUrl extends Document {
 
 
 const AudioUrlSchema = new mongoose.Schema<AudioUrl>({
-    url:{
+    url: {
         type: String,
         required: [true, "Audio URL is required"]
     },
-    title:{
+    title: {
         type: String,
         required: [true, "Audio title is required"]
     },
-    createdAt:{
+    createdAt: {
         type: Date,
         default: Date.now,
         required: true
@@ -46,7 +47,7 @@ const userSchema = new mongoose.Schema({
         default: null
     },
     savedAudioUrls: [AudioUrlSchema],
-},{
+}, {
     timestamps: true
 })
 

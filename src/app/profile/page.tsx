@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { WavyBackground } from "@/components/ui/wavy-background";
 import { APP_NAME } from "@/lib/constants";
-import PlayAudio from "@/components/PlayAudio" // your audio player
+import PlayAudio from "@/components/PlayAudio"; // your audio player
 import { useRouter } from "next/navigation";
 
 type Sound = {
-    url: string;
+    audioData: Buffer;
     title: string;
     createdAt: string;
+    url?: string ; // URL for the audio blob
 };
 
 const ProfilePage = () => {
@@ -16,7 +17,7 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [playingId, setPlayingId] = useState<number | null>(null);
     const [username, setUsername] = useState<string>("");
-
+    
     useEffect(() => {
         const fetchSavedSounds = async () => {
             try {
@@ -26,11 +27,11 @@ const ProfilePage = () => {
                 const data = await res.json();
                 const savedSounds = data.user.savedAudioUrls || [];
                 setUsername(data.user.username || ""); // Assuming the API returns the username
+
                 setSounds(savedSounds);
             } catch (error) {
                 console.error("Error fetching sounds:", error);
                 alert("Session expired or error fetching sounds.");
-
             } finally {
                 setLoading(false);
             }
@@ -40,7 +41,7 @@ const ProfilePage = () => {
     }, []);
 
     const handlePlay = (soundId: number) => {
-        setPlayingId(prev => (prev === soundId ? null : soundId));
+        setPlayingId((prev) => (prev === soundId ? null : soundId));
     };
 
     return (
@@ -48,8 +49,8 @@ const ProfilePage = () => {
             colors={["teal", "blue"]}
             className="min-h-screen w-full flex flex-col items-center py-16 px-4"
         >
-            <h2 className="text-3xl font-bold text-neutral-100 mb-6">
-                {APP_NAME} - {username}'s Profile
+            <h2 className="text-4xl italic font-bold text-neutral-100 mb-6 mt-5">
+                {username}
             </h2>
 
             {loading ? (
@@ -58,7 +59,7 @@ const ProfilePage = () => {
                 <p className="text-white">No saved sounds found.</p>
             ) : (
                 <div className="w-full max-w-2xl space-y-6">
-                    {sounds.map((sound,idx) => (
+                    {sounds.map((sound, idx) => (
                         <div
                             key={idx}
                             className="bg-white/10 backdrop-blur-sm p-4 rounded-xl shadow-md text-white"
@@ -70,14 +71,14 @@ const ProfilePage = () => {
                                 </div>
                                 <button
                                     onClick={() => handlePlay(idx)}
-                                    className="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded text-white font-medium"
+                                    className="bg-amber-500 text-lg cursor-pointer hover:bg-amber-600 px-4 py-2 rounded text-white font-medium"
                                 >
                                     {playingId === idx ? "Stop" : "Play"}
                                 </button>
                             </div>
                             {playingId === idx && (
                                 <div className="mt-4">
-                                    <PlayAudio audioUrl={sound.url} title={sound.title} />
+                                    <PlayAudio audioUrl={sound.url || ""} title={sound.title} />
                                 </div>
                             )}
                         </div>

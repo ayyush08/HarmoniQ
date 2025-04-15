@@ -13,7 +13,7 @@ const useGenerateSound = () => {
     const [audioSrc, setAudioSrc] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
+    const [mp3Buffer, setMp3Buffer] = useState<Buffer | null>(null); // Buffer to hold the MP3 data
     const generateSound = async (prompt: string) => {
         setLoading(true);
         setError(null);
@@ -47,6 +47,7 @@ const useGenerateSound = () => {
 
             const flacData = response.data; // This is already an ArrayBuffer
             const mp3Data = await convertFlacToMp3(flacData); // Convert FLAC to MP3
+            setMp3Buffer(mp3Data); // Store the MP3 data in state
             const audioBlob = new Blob([mp3Data], { type: "audio/mp3" }); 
             const audioUrl = URL.createObjectURL(audioBlob);
             setAudioSrc(audioUrl); // Use it in <audio> tag or Plyr
@@ -68,7 +69,7 @@ const useGenerateSound = () => {
         setError(null);
     };
 
-    return { audioSrc, loading, error, generateSound, reset };
+    return { audioSrc, loading, error, generateSound, reset, mp3Buffer };
 };
 
 export default useGenerateSound;
