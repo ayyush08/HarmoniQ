@@ -8,7 +8,7 @@ import { APP_NAME } from '@/lib/constants';
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
-
+    const pathname = usePathname();
     const [isCheckingAuth, setIsCheckingAuth] = useState(false);
 
     // Check if the user is logged in by checking the token (in cookies, session, etc.)
@@ -16,7 +16,10 @@ const Navbar = () => {
         const checkAuth = async () => {
             try {
                 setIsCheckingAuth(true);
-                const res = await fetch('/api/me'); // your auth-check API
+                const res = await fetch('/api/me',{
+                    method: 'GET',
+                    credentials: 'include', // Include cookies in the request
+                }); // your auth-check API
                 if (res.ok) {
                     setIsLoggedIn(true);
                 } else {
@@ -26,13 +29,13 @@ const Navbar = () => {
             } catch (err) {
                 console.error(err);
                 setIsLoggedIn(false);
-            }finally{
+            } finally {
                 setIsCheckingAuth(false);
             }
         };
 
         checkAuth();
-    }, [isLoggedIn]);
+    }, [pathname]);
 
 
     const handleLogin = () => {
@@ -47,7 +50,7 @@ const Navbar = () => {
         router.push('/profile'); // Redirect to profile page
     };
 
-    const pathname = usePathname();
+
 
     const handleLogout = async () => {
         try {
@@ -69,7 +72,7 @@ const Navbar = () => {
         }
     }
 
-    if(isCheckingAuth) {
+    if (isCheckingAuth) {
         return (
             <nav className="bg-transparent fixed top-0 left-0 w-full p-4 shadow-lg z-30">
                 <div className="container mx-auto flex justify-between items-center">
@@ -95,7 +98,7 @@ const Navbar = () => {
                         <>
                             {pathname !== "/login" && (
                                 <button
-                                    className="text-white cursor-pointer bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded"
+                                    className="text-white cursor-pointer border-4 font-bold transition-all  border-blue-500 hover:bg-blue-700/30 px-4 py-2 rounded-lg"
                                     onClick={handleLogin}
                                 >
                                     Login
@@ -103,7 +106,7 @@ const Navbar = () => {
                             )}
                             {pathname !== "/signup" && (
                                 <button
-                                    className="text-white cursor-pointer bg-green-500 hover:bg-green-700 px-4 py-2 rounded"
+                                    className="text-white cursor-pointer border-4 font-bold transtion-all border-green-500 hover:bg-green-700/30 px-4 py-2 rounded-lg"
                                     onClick={handleSignup}
                                 >
                                     Signup
@@ -115,7 +118,7 @@ const Navbar = () => {
                         <>
                             {pathname !== "/profile" && (
                                 <button
-                                    className="text-white cursor-pointer bg-purple-500 hover:bg-purple-700 px-4 py-2 rounded"
+                                    className="text-white font-bold transition-all cursor-pointer border-4 rounded-lg border-purple-600 hover:bg-purple-700/30 px-4 py-2 "
                                     onClick={handleProfile}
                                 >
                                     Profile
@@ -123,7 +126,8 @@ const Navbar = () => {
                             )}
 
                             <button
-                                className="text-white cursor-pointer bg-red-500 hover:bg-red-700 px-4 py-2 rounded"
+                                className="text-white cursor-pointer border-4 font-bold
+                                   border-red-500 hover:bg-red-700/30 px-4 py-2 rounded-lg transition-all"
                                 onClick={handleLogout}
                             >
                                 Logout

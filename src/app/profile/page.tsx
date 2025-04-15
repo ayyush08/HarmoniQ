@@ -21,7 +21,9 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchSavedSounds = async () => {
             try {
-                const res = await fetch("/api/me", { method: "GET" }); // make sure this route returns user sounds
+                const res = await fetch("/api/me", { method: "GET",
+                    credentials: "include",
+                 }); // make sure this route returns user sounds
                 if (!res.ok) throw new Error("Failed to fetch sounds");
 
                 const data = await res.json();
@@ -38,7 +40,7 @@ const ProfilePage = () => {
         };
 
         fetchSavedSounds();
-    }, []);
+    }, [  ]);
 
     const handlePlay = (soundId: number) => {
         setPlayingId((prev) => (prev === soundId ? null : soundId));
@@ -66,7 +68,7 @@ const ProfilePage = () => {
                         >
                             <div className="flex justify-between items-center">
                                 <div>
-                                    <h4 className="text-lg font-semibold">{sound.title}</h4>
+                                    <h4 className="text-md font-semibold">{sound.title}</h4>
                                     <p className="text-sm text-gray-300">{new Date(sound.createdAt).toLocaleString()}</p>
                                 </div>
                                 <button

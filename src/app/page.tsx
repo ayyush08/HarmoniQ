@@ -75,11 +75,17 @@ export default function Home() {
 
   const handleSave = async () => {
     try {
+      setIsSavingAudio(true);
       if (!audioSrc) {
         alert("No audio to save");
         return;
       }
-      setIsSavingAudio(true);
+      const res = await fetch('/api/me'); // your auth-check API
+      if (!res.ok) {
+          alert("Please login to save your audio");
+          return;
+      } 
+      
       const audioBase64 = mp3Buffer
         ? arrayBufferToBase64(
           mp3Buffer.buffer.slice(

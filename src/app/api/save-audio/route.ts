@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import User from '@/models/user.model';
 import { connectDB } from '@/dbConfig/db';
-import { create } from 'domain';
 
 connectDB();
 
@@ -11,7 +10,7 @@ export async function POST(request: NextRequest) {
         const token = request.cookies.get('token')?.value;
 
         if (!token) {
-            return NextResponse.json({ error: 'Unauthorized, Token not found' }, { status: 401 });
+            return NextResponse.json({ error: 'Please Login or create an account to save' }, { status: 401 });
         }
 
         const decoded: any = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!);
