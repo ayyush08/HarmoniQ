@@ -79,18 +79,18 @@ const LoginForm = () => {
             <form className="my-8 w-1/3" onSubmit={handleSubmit}>
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="username" >Username</Label>
-                    <Input id="username" placeholder="Tyler" type="text" value={username}
+                    <Input id="username" placeholder="Enter your username" type="text" value={username}
                         onChange={(e) => setUsername(e.target.value)} />
                 </LabelInputContainer>
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="email" >Email</Label>
-                    <Input id="email" placeholder="example@gmail.com" type="text" value={email}
+                    <Input id="email" placeholder="Enter your email" type="text" value={email}
                         onChange={(e) => setEmail(e.target.value)} />
                 </LabelInputContainer>
 
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="password">Password</Label>
-                    <Input id="password" placeholder="••••••••" type="password" value={password}
+                    <Input id="password" placeholder="Enter your password" type="password" value={password}
                         onChange={(e) => setPassword(e.target.value)} />
                 </LabelInputContainer>
 

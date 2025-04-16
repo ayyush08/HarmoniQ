@@ -123,7 +123,7 @@ export default function Home() {
 
       if (!saveRes.ok) throw new Error("Failed to save audio URL");
 
-      alert("Audio saved and uploaded successfully!");
+      alert("Audio saved successfully!");
     } catch (error) {
       console.error("Error saving audio:", error);
       alert("An error occurred while saving the audio. Please try again.");
