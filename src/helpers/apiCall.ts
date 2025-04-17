@@ -28,8 +28,10 @@ const useGenerateSound = () => {
             const enhancedPrompt = geminiResponse.data.enhancedPrompt;
 
             if (!enhancedPrompt) {
-                throw new Error("No enhanced prompt returned from Gemini API.");
+                setError(geminiResponse.data.error || "Please provide a valid prompt.");
             }
+            console.log("Enhanced Prompt:", geminiResponse);
+            
             const response = await axios.post(
                 "http://localhost:5000/generate",
                 { prompt: enhancedPrompt },
@@ -58,7 +60,9 @@ const useGenerateSound = () => {
 
             console.log(response.data)
         } catch (err: any) {
-            setError(err?.message || "Failed to generate sound.");
+            console.log(err);
+            setError(err?.response?.data?.error || "Failed to generate sound.");
+            
         } finally {
             setLoading(false);
         }

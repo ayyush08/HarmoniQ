@@ -39,11 +39,8 @@ export default function Home() {
       setAudioUrl(audioSrc);
     }
 
-  }, [prompt, audioSrc, setAudioUrl, setPrompt]);
+  }, [prompt, audioSrc, setAudioUrl, setPrompt,error]);
 
-  if (error) {
-    alert(error);
-  }
 
   const handleReset = () => {
     setAudioUrl(null);
@@ -166,6 +163,12 @@ export default function Home() {
 
 
         <div className="flex flex-col gap-5 w-[50vw] min-h-screen justify-center items-center">
+          {
+            error && (
+              <div className="text-red-500 text-center text-lg font-semibold mb-4">
+                {error}
+              </div>
+            )}
           {!audioUrl && (
             <div className="font-bold italic p-5 text-5xl mb-6 mx-auto bg-gradient-to-b text-transparent bg-clip-text from-teal-500 to-red-300">
               Type the kind of sound you need, and let AI bring it to life.

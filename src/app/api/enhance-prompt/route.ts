@@ -22,13 +22,22 @@ const model = genAIClient.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function POST(req: Request) {
     const { text } = await req.json();
-
+    const isValid = await isMusicPrompt(text);
+    if (!isValid) {
+        return NextResponse.json({
+            error: "Input does not appear to be a music-related prompt.",
+        }, {
+            status: 400,
+            statusText: "Bad Request",
+        });
+    }
     const prompt = await wrapPrompt(text);
 
     const response = await model.generateContent({
         contents: [{
             role: "user",
-            parts: [{ text: prompt }] }],
+            parts: [{ text: prompt }]
+        }],
     });
 
     if (!response) {
@@ -47,9 +56,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
         enhancedPrompt: result,
-    },{
+    }, {
         status: 200,
-        statusText:"OK",
+        statusText: "OK",
     })
 }
 
@@ -69,3 +78,22 @@ const wrapPrompt = async (prompt: string) => {
 
     return fullPrompt;
 }
+
+const isMusicPrompt = async (userText: string): Promise<boolean> => {
+    const checkPrompt = `Determine whether the following text is a valid prompt for AI music or sound generation. 
+The input should describe musical style, mood, genre, instruments, or audio intent.
+
+Respond only with:
+- "valid" → if it is suitable for AI music generation
+- "invalid" → if it is not
+
+Text: "${userText}"`;
+
+    const response = await model.generateContent({
+        contents: [{ role: "user", parts: [{ text: checkPrompt }] }],
+    });
+
+    const reply = response.response.text().trim().toLowerCase();
+    return reply.includes("valid");
+}
+
