@@ -1,4 +1,4 @@
-# 🎵 HarmoniQ
+# 🎵 HarmoniQ - An AI Sound Designer
 
 - HarmoniQ is a Next.js application that provides an interface for users to generate sounds of their choice using a simple prompt. The application uses a combination of Gemini and Hugging Face APIs to generate the sounds and display them in a user-friendly manner. 🎧
 - The application is designed to be easy to use, with a simple and intuitive interface that allows users to quickly generate sounds without any technical knowledge. 🚀
@@ -15,12 +15,17 @@
 ### 🌟 Gemini API (model: gemini-1.5-flash)
  For enhancing the user prompt to provide a better prompt to send on to the Hugging Face API
 
-### 🤖 Hugging Face API (model: facebook/musicgen-small) 
+### 🤖 Hugging Face Model (model: facebook/musicgen-small) 
  For generating the sound based on the user prompt
 
 ### ⚛️ Next.js
 - A React framework for building server-side rendered applications
 - Provides a simple and efficient way to build web applications with server-side rendering and static site generation
+
+### Database
+- MongoDB (for storing user data and generated sounds)
+
+
 
 ## 🚀 Installation
 

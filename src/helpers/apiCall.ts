@@ -35,7 +35,7 @@ const useGenerateSound = () => {
             const response = await axios.post(
                 "http://localhost:5000/generate",
                 { prompt: enhancedPrompt },
-                { responseType: "arraybuffer" } // 👈 Important!
+                { responseType: "arraybuffer" } 
             );
 
 
@@ -47,12 +47,12 @@ const useGenerateSound = () => {
                 throw new Error("Failed to generate sound.");
             }
 
-            const flacData = response.data; // This is already an ArrayBuffer
-            const mp3Data = await convertFlacToMp3(flacData); // Convert FLAC to MP3
-            setMp3Buffer(mp3Data); // Store the MP3 data in state
+            const flacData = response.data; 
+            const mp3Data = await convertFlacToMp3(flacData); 
+            setMp3Buffer(mp3Data); 
             const audioBlob = new Blob([mp3Data], { type: "audio/mp3" }); 
             const audioUrl = URL.createObjectURL(audioBlob);
-            setAudioSrc(audioUrl); // Use it in <audio> tag or Plyr
+            setAudioSrc(audioUrl); 
 
 
 

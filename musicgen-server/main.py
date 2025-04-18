@@ -18,16 +18,13 @@ app.add_middleware(
 
 class PromptRequest(BaseModel):
     prompt: str
-
-# Use GPU if available
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"[INFO] Using device: {device}")
 
-# Load model and processor with FP16 for speed & memory efficiency
 model = MusicgenForConditionalGeneration.from_pretrained(
     "facebook/musicgen-small",
     attn_implementation="eager",
-    torch_dtype=torch.float16 if device == "cuda" else torch.float32  # use float16 for GPU
+    torch_dtype=torch.float16 if device == "cuda" else torch.float32  
 ).to(device)
 
 processor = AutoProcessor.from_pretrained("facebook/musicgen-small")
@@ -43,7 +40,7 @@ async def generate(prompt_req: PromptRequest):
             prompt,
             forward_params={
                 "do_sample": True,
-                "max_new_tokens": 1024  # 10–15 sec output
+                "max_new_tokens": 1024  
             }
         )
 
