@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const isValid = await isMusicPrompt(text);
     if (!isValid) {
         return NextResponse.json({
-            error: "Input does not appear to be a sound-generation related prompt. Please provide a valid prompt.",
+            error: "Sorry, we only support sound generation prompts.",
         }, {
             status: 400,
             statusText: "Bad Request",
