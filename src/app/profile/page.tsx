@@ -77,6 +77,7 @@ const ProfilePage = () => {
                                 >
                                     {playingId === idx ? "Stop" : "Play"}
                                 </button>
+
                             </div>
                             {playingId === idx && (
                                 <div className="mt-4">

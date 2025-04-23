@@ -48,7 +48,6 @@ export async function GET(request: NextRequest) {
             }
         ])
 
-        console.log(audios[0]);
         
         return NextResponse.json({
             message: 'User details fetched successfully',

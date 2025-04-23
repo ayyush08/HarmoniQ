@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const isValid = await isMusicPrompt(text);
     if (!isValid) {
         return NextResponse.json({
-            error: "Input does not appear to be a sound-generation related prompt.",
+            error: "Input does not appear to be a sound-generation related prompt. Please provide a valid prompt.",
         }, {
             status: 400,
             statusText: "Bad Request",
@@ -41,9 +41,9 @@ export async function POST(req: Request) {
     });
 
     if (!response) {
-        console.error("No candidates found in Gemini model response.");
+        console.error("No Gemini model response.");
         return NextResponse.json({
-            error: "No candidates found in Gemini model response."
+            error: "No Gemini model response."
         }, {
             status: 500,
             statusText: "Internal Server Error",
@@ -83,6 +83,7 @@ const isMusicPrompt = async (userText: string): Promise<boolean> => {
     const checkPrompt = `Determine whether the following text is a valid prompt for AI music or sound generation. 
 The input should describe musical style, mood, genre, instruments, or audio intent.
 
+
 Respond only with:
 - "valid" → if it is suitable for AI music generation
 - "invalid" → if it is not
@@ -94,6 +95,9 @@ Text: "${userText}"`;
     });
 
     const reply = response.response.text().trim().toLowerCase();
-    return reply.includes("valid");
+
+    console.log("Prompt check response:", reply);
+    
+    return reply=== "valid" ? true : false;
 }
 

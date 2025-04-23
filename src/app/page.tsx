@@ -165,7 +165,7 @@ export default function Home() {
         <div className="flex flex-col gap-5 w-[50vw] min-h-screen justify-center items-center">
           {
             error && (
-              <div className="text-red-500 text-center text-lg font-semibold mb-4">
+              <div className="text-red-500 text-center text-2xl  font-semibold mb-4">
                 {error}
               </div>
             )}

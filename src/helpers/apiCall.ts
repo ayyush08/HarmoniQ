@@ -1,13 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { NextResponse } from "next/server";
 import { convertFlacToMp3 } from "@/lib/convertAudio";
 
 
-const HF_API_KEY = process.env.NEXT_PUBLIC_HF_API_KEY as string;
-if (!HF_API_KEY) {
-    throw new Error("HF_API_KEY is not defined. Please set it in your environment variables.");
-}
+
 
 const useGenerateSound = () => {
     const [audioSrc, setAudioSrc] = useState<string | null>(null);

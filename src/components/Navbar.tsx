@@ -79,7 +79,7 @@ const Navbar = () => {
                     <Link href="/" className="text-5xl font-bold text-white">
                         <ColourfulText text={APP_NAME} />
                     </Link>
-                    <p className="text-white">Loading...</p>
+                    <p className="text-white font-semibold">Loading...</p>
                 </div>
             </nav>
         );
@@ -91,7 +91,7 @@ const Navbar = () => {
                 <Link href="/" className="text-5xl font-bold text-white">
                     <ColourfulText text={APP_NAME} />
                 </Link>
-                <div className="space-x-4 flex items-center">
+                <div className="space-x-4 flex items-center font-semibold font-sans">
                     <p>12318074 - Ayush Kumar Gupta</p>
                     <p>12317053 - Anshika</p>
                     {!isLoggedIn ? (
