@@ -22,6 +22,9 @@
 - A React framework for building server-side rendered applications
 - Provides a simple and efficient way to build web applications with server-side rendering and static site generation
 
+### FastAPI
+- For running the model on a dedicated python-based server
+
 ### Database
 - MongoDB (for storing user data and generated sounds)
 
@@ -46,7 +49,6 @@
 
 4. Create a `.env` file in the root directory and add your API keys
 ```bash
-     NEXT_PUBLIC_HF_API_KEY=your_huggingface_api_key
      GEMINI_API_KEY=your_gemini_api_key
 ```
 
